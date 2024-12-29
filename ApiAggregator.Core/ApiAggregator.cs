@@ -1,9 +1,6 @@
-﻿namespace ApiAggregator.Core;
+﻿using Microsoft.AspNetCore.Http;
 
-public interface IExternalApi
-{
-    IList<IApiFunction> Functions { get; }
-}
+namespace ApiAggregator.Core;
 
 public interface IApiFunction
 {
@@ -12,21 +9,19 @@ public interface IApiFunction
     string Pattern { get; }
 }
 
-public interface IAggregationFunction
+public interface IAggregationFunction : IApiFunction
 {
-    string Name { get; }
-
-    IList<IApiFunction> Functions { get; }
-
-    Task<IList<Task<IApiResult>>> ToTasks();
-}
-
-public interface IInternalApi
-{
-    IList<IAggregationFunction> AggFunctions { get; }
+    Task Handler(HttpContext context);
 }
 
 public interface IApiResult
 {
+    string Result { get; }
+}
 
+public interface IAggResult
+{
+    List<IApiResult> Results { get; }
+
+    string RawFormat();
 }

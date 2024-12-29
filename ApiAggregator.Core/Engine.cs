@@ -1,11 +1,19 @@
 ﻿namespace ApiAggregator.Core;
 
-internal class Engine
+public class Engine
 {
-    public static async Task<IList<IApiResult>> Run(IAggregationFunction aggFunction, CancellationToken ct)
+    internal static async Task<IList<IApiResult>> Run(IEnumerable<IApiFunction> functions, CancellationToken ct)
     {
-        var callTasks = await aggFunction.ToTasks();
+        var callTasks = ToTasks(functions);
         Task.WaitAll([.. callTasks], ct);
-        return callTasks.Select(t => t.Result).ToList();
+        return await Task.FromResult(callTasks.Select(t => t.Result).ToList());
+    }
+
+    static IList<Task<IApiResult>> ToTasks(IEnumerable<IApiFunction> functions)
+    {
+        List<Task<IApiResult>> tasks = [];
+        foreach (var func in functions)
+            tasks.Add(ApiResultGeneric.CreateFrom(func.Pattern));
+        return tasks;
     }
 }

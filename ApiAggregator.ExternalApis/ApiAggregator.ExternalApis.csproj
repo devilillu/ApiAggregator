@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\ApiAggregator.Core\ApiAggregator.Core.csproj" />
+    <ProjectReference Include="..\ApiAggregator.ExternalApis.Core\ApiAggregator.ExternalApis.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Helper\Helper.csproj" />
-  </ItemGroup>	
-	
 </Project>

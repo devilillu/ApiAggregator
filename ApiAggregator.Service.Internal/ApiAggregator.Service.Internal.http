@@ -1,0 +1,6 @@
+@ApiAggregator.Service.Internal_HostAddress = http://localhost:5246
+
+GET {{ApiAggregator.Service.Internal_HostAddress}}/
+Accept: application/json
+
+###

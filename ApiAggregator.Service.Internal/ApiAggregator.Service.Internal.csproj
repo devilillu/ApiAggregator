@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>5c9d3497-3b37-4e92-96c4-7ad82ec2ca98</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiAggregator.Core\ApiAggregator.Core.csproj" />
+    <ProjectReference Include="..\ApiAggregator.ExternalApis\ApiAggregator.ExternalApis.csproj" />
+    <ProjectReference Include="..\Helper\Helper.csproj" />
+  </ItemGroup>
+
+</Project>
