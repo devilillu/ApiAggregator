@@ -17,6 +17,6 @@ CacheExpirationPeriod=60
 - .../stats/total_avg
 
 # For debug
-[]/stats/all
-[]/stats/total
-[]/stats/averaged
+- .../stats/all
+- .../stats/total
+- .../stats/averaged

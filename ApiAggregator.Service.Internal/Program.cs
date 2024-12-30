@@ -38,6 +38,13 @@ public class Program
                 config?.GetValue<string>("WeatherAPI") ?? string.Empty,
                 config?.GetValue<string>("NewsAPI") ?? string.Empty,
                 statistics, apiCache),
+
+            new NewsWeatherDictAggregateFunction(
+                config?.GetValue<string>("WeatherAPI") ?? string.Empty,
+                config?.GetValue<string>("NewsAPI") ?? string.Empty,
+                statistics, apiCache),
+
+            new DictionaryAggregateFunction(statistics, apiCache)
         };
 
         return aggFunctions;
