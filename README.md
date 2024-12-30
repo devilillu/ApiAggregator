@@ -9,12 +9,12 @@
 NewsAPI=[API Key]
 WeatherAPI=[API Key]
 
-2. For cache memory the expiration period in seconds
+2. and for cache memory the expiration period in seconds
 CacheExpirationPeriod=60
 
-
-[]/api/nw/2024-12-27/60/30/Moldavia
-[]/stats/total_avg
+3. ...
+.../api/nw/2024-12-27/60/30/Moldavia
+.../stats/total_avg
 
 # For debug
 []/stats/all
