@@ -44,7 +44,7 @@
 - < 700 is Slow
 - rest are Turtle
 
-# DPC - SETUP/CONFIG
+# DOC - SETUP/CONFIG
 1. Config API keys for "News" and "Weather", add in Command line arguments 
 - NewsAPI=[API Key]
 - WeatherAPI=[API Key]
