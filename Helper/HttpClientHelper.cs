@@ -1,11 +1,10 @@
-﻿using System.Text;
-
-namespace Helper;
+﻿namespace Helper;
 
 public static class HttpClientHelper
 {
-    public static async Task<string> SendAsync(string uri, IEnumerable<KeyValuePair<string, string>> headers)
+    public static async Task<HttpClientResult> SendAsync(string uri, IEnumerable<KeyValuePair<string, string>> headers)
     {
+        DateTime start = DateTime.Now;
         try
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, uri);
@@ -15,23 +14,26 @@ public static class HttpClientHelper
                 client.DefaultRequestHeaders.Add(item.Key, item.Value);
 
             var httpResponse = await client.SendAsync(httpRequest);
-            return await httpResponse.Content.ReadAsStringAsync();
+
+            return new(await httpResponse.Content.ReadAsStringAsync(), DateTime.Now - start);
         }
         catch (ArgumentNullException ex)
         {
-            return $"{uri}:{ex.Message}";
+            return new($"{uri}:{ex.Message}", DateTime.Now - start); ;
         }
         catch (InvalidOperationException ex)
         {
-            return $"{uri}:{ex.Message}";
+            return new($"{uri}:{ex.Message}", DateTime.Now - start); ;
         }
         catch (HttpRequestException ex)
         {
-            return $"{uri}:{ex.Message}";
+            return new($"{uri}:{ex.Message}", DateTime.Now - start); ;
         }
         catch (TaskCanceledException ex)
         {
-            return $"{uri}:{ex.Message}";
+            return new($"{uri}:{ex.Message}", DateTime.Now - start);;
         }
     }
 }
+
+public record class HttpClientResult(string Result, TimeSpan Ellapsed);

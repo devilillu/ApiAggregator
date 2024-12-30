@@ -6,15 +6,18 @@ namespace ApiAggregator.Core;
 
 public class ApiResultGeneric : IApiResult
 {
-    public static async Task<IApiResult> CreateFrom(string uri, IEnumerable<KeyValuePair<string, string>> headers) =>
-        new ApiResultGeneric(await HttpClientHelper.SendAsync(uri, headers));
+    public static async Task<IApiResult> CreateFrom(IApiFunction function) =>
+        new ApiResultGeneric(await HttpClientHelper.SendAsync(function.Pattern, function.Headers), function);
 
-    public ApiResultGeneric(string message)
+    public ApiResultGeneric(HttpClientResult message, IApiFunction function)
     {
         Result = message;
+        Function = function;
     }
 
-    public string Result { get; }
+    public HttpClientResult Result { get; }
+
+    public IApiFunction Function { get; }
 }
 
 public class ApiAggResultGeneric : IAggResult
@@ -34,9 +37,9 @@ public class ApiAggResultGeneric : IAggResult
         try
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var result in Results)
+            foreach (var httpResult in Results)
             {
-                sb.Append(result.Result);
+                sb.Append(httpResult.Result.Result);
                 sb.Append(Environment.NewLine);
             }
 

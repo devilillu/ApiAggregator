@@ -7,7 +7,7 @@ public class Engine
         //TODO handle exceptions
         List<Task<IApiResult>> tasks = [];
         foreach (var func in functions)
-            tasks.Add(ApiResultGeneric.CreateFrom(func.Pattern, func.Headers));
+            tasks.Add(ApiResultGeneric.CreateFrom(func));
         Task.WaitAll([.. tasks], ct);
         return await Task.FromResult(tasks.Select(t => t.Result).ToList());
     }

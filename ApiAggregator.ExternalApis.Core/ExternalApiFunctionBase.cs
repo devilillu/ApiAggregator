@@ -13,9 +13,11 @@ public abstract class ExternalApiFunctionBase : IApiFunction
 
     public string Pattern => BasePath + PatternPart;
 
-    protected string APIKey { get; init; }
+    public string ApiName => BasePath;
 
     public abstract string Name { get; }
+
+    protected string APIKey { get; init; }
 
     protected abstract string BasePath { get; }
 
