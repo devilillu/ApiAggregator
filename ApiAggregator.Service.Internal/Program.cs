@@ -44,7 +44,12 @@ public class Program
                 config?.GetValue<string>("NewsAPI") ?? string.Empty,
                 statistics, apiCache),
 
-            new DictionaryAggregateFunction(statistics, apiCache)
+            new DictionaryAggregateFunction(statistics, apiCache),
+
+            new NewsWeatherCityAggregateFunction(                
+                config?.GetValue<string>("WeatherAPI") ?? string.Empty,
+                config?.GetValue<string>("NewsAPI") ?? string.Empty,
+                statistics, apiCache),
         };
 
         return aggFunctions;

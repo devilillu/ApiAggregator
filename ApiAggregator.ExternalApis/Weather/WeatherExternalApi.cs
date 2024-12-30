@@ -16,3 +16,17 @@ public class WeatherApiFunctionA : WeatherApiFunctionBase
 
     protected override string PatternPart => @"/data/2.5/weather?lat=" + Latitude + "&lon=" + Longitude + "&appid=" + APIKey;
 }
+
+public class WeatherApiFunctionB : WeatherApiFunctionBase
+{
+    public WeatherApiFunctionB(string city, string APIKey) : base(APIKey)
+    {
+        City = city;
+    }
+
+    public override string Name => "city - appid";
+
+    public string City { get; init; }
+
+    protected override string PatternPart => @"/data/2.5/weather?q=" + City + "&appid=" + APIKey;
+}
