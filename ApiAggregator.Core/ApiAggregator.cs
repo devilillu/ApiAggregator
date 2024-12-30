@@ -7,6 +7,8 @@ public interface IApiFunction
     string Name { get; }
 
     string Pattern { get; }
+
+    IEnumerable<KeyValuePair<string, string>> Headers { get; }
 }
 
 public interface IAggregationFunction : IApiFunction

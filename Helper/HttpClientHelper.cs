@@ -4,50 +4,34 @@ namespace Helper;
 
 public static class HttpClientHelper
 {
-    public static async Task<string> GetAsync(string uri)
+    public static async Task<string> SendAsync(string uri, IEnumerable<KeyValuePair<string, string>> headers)
     {
         try
         {
-            using var response = await new HttpClient().GetAsync(uri);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, uri);
+            using var client = new HttpClient();
+
+            foreach (var item in headers)
+                client.DefaultRequestHeaders.Add(item.Key, item.Value);
+
+            var httpResponse = await client.SendAsync(httpRequest);
+            return await httpResponse.Content.ReadAsStringAsync();
         }
-        catch (Exception ex)
+        catch (ArgumentNullException ex)
         {
             return $"{uri}:{ex.Message}";
         }
-    }
-
-    public static async Task<HttpResponseMessage> PostJsonAsync(string uri, string jsonObject)
-    {
-        var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
-        return await new HttpClient().PostAsync(uri, content);
-    }
-
-    /// <param name="uri">"https://covid-19-data.p.rapidapi.com/country/code?format=json&code=it"</param>
-    ///             Headers =
-    ///{
-    /// { "x-rapidapi-key", "Sign Up for Key" },
-    ///{ "x-rapidapi-host", "covid-19-data.p.rapidapi.com" },
-    ///},
-
-    public static async
-    Task<string?> Run(string uri, IEnumerable<KeyValuePair<string, string>> headers)
-    {
-        var client = new HttpClient();
-        var request = new HttpRequestMessage
+        catch (InvalidOperationException ex)
         {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(uri),
-        };
-
-        foreach (var item in headers)
-            request.Headers.Add(item.Key, item.Value);
-
-        using (var response = await client.SendAsync(request))
+            return $"{uri}:{ex.Message}";
+        }
+        catch (HttpRequestException ex)
         {
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            return $"{uri}:{ex.Message}";
+        }
+        catch (TaskCanceledException ex)
+        {
+            return $"{uri}:{ex.Message}";
         }
     }
 }

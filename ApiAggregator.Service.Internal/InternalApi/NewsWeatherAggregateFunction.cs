@@ -1,5 +1,6 @@
 ﻿using ApiAggregator.Core;
-using ApiAggregator.ExternalApis;
+using ApiAggregator.ExternalApis.News;
+using ApiAggregator.ExternalApis.Weather;
 using Helper;
 
 namespace ApiAggregator.Service.Internal.InternalApi;
@@ -18,16 +19,16 @@ public class NewsWeatherAggregateFunction : AggregateFunctionBase
 
     protected override IList<IApiFunction> CreateFunctionList(HttpContext context)
     {
-        var date = Convert.ToDateTime(context.RetrieveFromUri("DATE"));
+        var date = context.RetrieveFromUri("DATE");
         var longtitude = context.RetrieveFromUri("LON");
         var latitude = context.RetrieveFromUri("LAT");
         var keyword = context.RetrieveFromUri("KEYWORD");
 
-        return new List<IApiFunction>()
-            {
+        return
+            [
                 new WeatherApiFunctionA(latitude, longtitude, _weatherAPI),
                 new NewsApiFunctionA(date, keyword, _newsAPI)
-            };
+            ];
     }
 
     readonly string _weatherAPI;

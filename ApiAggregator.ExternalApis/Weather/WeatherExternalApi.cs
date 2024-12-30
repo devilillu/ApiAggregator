@@ -1,14 +1,4 @@
-﻿using ApiAggregator.Core;
-using ApiAggregator.ExternalApis.Core;
-
-namespace ApiAggregator.ExternalApis;
-
-public abstract class WeatherApiFunctionBase : ExternalApiFunctionBase
-{
-    protected WeatherApiFunctionBase(string apiKey) : base(apiKey) { }
-
-    protected override string BasePath => @"https://api.openweathermap.org";
-}
+﻿namespace ApiAggregator.ExternalApis.Weather;
 
 public class WeatherApiFunctionA : WeatherApiFunctionBase
 {
