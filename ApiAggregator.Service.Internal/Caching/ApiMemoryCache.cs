@@ -9,7 +9,13 @@ public class ApiMemoryCache : IApiMemoryCache
 
     public bool Check(string key, out string? result) => _cache.TryGetValue(key, out result);
 
-    public void Set(string key, string value) => _cache.Set(key, value, _expirationPeriod);
+    public void Set(string key, string value)
+    {
+        if (_expirationPeriod == TimeSpan.Zero)
+            _cache.Set(key, value);
+        else
+            _cache.Set(key, value, _expirationPeriod);
+    }
 
     readonly TimeSpan _expirationPeriod;
 
