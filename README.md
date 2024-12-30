@@ -1,6 +1,20 @@
 # ApiAggregator
+- Simply combine together json responses from various external APIs
 
-# Aggregated END POINTS
+# Used APIs
+- https://api.dictionaryapi.dev
+- https://newsapi.org
+- https://api.openweathermap.org
+
+# For adding new external API
+1. Inherit from "ExternalApiFunctionBase" when creating a new "NewApiFunctionBase"
+2. Write new functions for new API by inheriting from "NewApiFunctionBase"
+
+# For creating new aggregated internal API method calls
+1. Create new AggregateFunction class by inheriting from AggregateFunctionBase
+2. Add new aggregate function on "BuildAggregatedApi" return list
+
+# DOC - END POINTS - Aggregated
 - /api/nw/[date]/[longitude]/[latitude]/[keyword]
 -- Will query for news on a given [date] (YYYY-MM-DD) with a given [keyword] and will aggregate weather information on given [longitude] and [latitude].
 
@@ -13,18 +27,24 @@
 - /api/d/[KEYWORD]
 -- Will provide dictionary information on the [keyword].
 
-# END POINTS Stats
-- https://localhost:44309/stats/all
-
-# END POINTS Stats extra
-- https://localhost:44309/stats/total
-- https://localhost:44309/stats/averaged
+# DOC - END POINTS - Stats
 - https://localhost:44309/stats/total_avg
 
-# IO Formats
-- All output in json format
+# DOC - END POINTS - Stats extra
+- https://localhost:44309/stats/all
+- https://localhost:44309/stats/total
+- https://localhost:44309/stats/averaged
 
-# SETUP/CONFIG
+# DOC - IO Formats
+- All output in json format
+- Statistics printed in free text
+- < 100ms is Ultra
+- < 200ms is Fast
+- < 350 is Medium
+- < 700 is Slow
+- rest are Turtle
+
+# DPC - SETUP/CONFIG
 1. Config API keys for "News" and "Weather", add in Command line arguments 
 - NewsAPI=[API Key]
 - WeatherAPI=[API Key]
