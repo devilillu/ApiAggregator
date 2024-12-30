@@ -13,8 +13,8 @@ WeatherAPI=[API Key]
 CacheExpirationPeriod=60
 
 3. ...
-.../api/nw/2024-12-27/60/30/Moldavia
-.../stats/total_avg
+- .../api/nw/2024-12-27/60/30/Moldavia
+- .../stats/total_avg
 
 # For debug
 []/stats/all
