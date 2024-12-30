@@ -1,4 +1,5 @@
 using ApiAggregator.Core;
+using ApiAggregator.Service.Internal.Caching;
 using ApiAggregator.Service.Internal.InternalApi;
 using ApiAggregator.Service.Internal.Measurements;
 using Helper;
@@ -13,9 +14,11 @@ public class Program
         var app = builder.Build();
 
         IStatistics statistics = new Statistics();
+        IApiMemoryCache apiCache = new ApiMemoryCache(
+            TimeSpan.FromSeconds(builder.Configuration?.GetValue<double>("CacheExpirationPeriod") ?? 60));
 
         app.MapGet("/", (HttpContext context) => context.WriteToBodyAsync("Aggregator"));
-        foreach (var apiMethod in BuildAggregatedApi(builder.Configuration, statistics))
+        foreach (var apiMethod in BuildAggregatedApi(builder.Configuration, statistics, apiCache))
             app.MapGet(apiMethod.Pattern, apiMethod.Handler);
 
         app.MapGet("/stats/all", (HttpContext context) => context.WriteToBodyAsync(statistics.ToRaw()));
@@ -26,14 +29,15 @@ public class Program
         app.Run();
     }
 
-    static IList<IAggregationFunction> BuildAggregatedApi(ConfigurationManager config, IStatistics statistics)
+    static IList<IAggregationFunction> BuildAggregatedApi(ConfigurationManager? config,
+        IStatistics statistics, IApiMemoryCache apiCache)
     {
         var aggFunctions = new List<IAggregationFunction>
         {
             new NewsWeatherAggregateFunction(
                 config?.GetValue<string>("WeatherAPI") ?? string.Empty,
                 config?.GetValue<string>("NewsAPI") ?? string.Empty,
-                statistics),
+                statistics, apiCache),
         };
 
         return aggFunctions;

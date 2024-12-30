@@ -5,9 +5,10 @@ namespace ApiAggregator.Core;
 
 public abstract class AggregateFunctionBase : IAggregationFunction
 {
-    public AggregateFunctionBase(IStatistics statistics)
+    public AggregateFunctionBase(IStatistics statistics, IApiMemoryCache apiCache)
     {
         _statistics = statistics;
+        _apiCache = apiCache;
     }
 
     public abstract string Name { get; }
@@ -21,7 +22,7 @@ public abstract class AggregateFunctionBase : IAggregationFunction
     public async Task Handler(HttpContext context)
     {
         var cs = new CancellationTokenSource();
-        var aggResult = await ApiAggResultGeneric.CreateFrom(CreateFunctionList(context), cs.Token);
+        var aggResult = await ApiAggResultGeneric.CreateFrom(CreateFunctionList(context), _apiCache, cs.Token);
         foreach (var apiResult in aggResult.Results)
             _statistics.Update(apiResult.Function.ApiName, apiResult.Result.Ellapsed);
         await context.WriteToBodyAsync(aggResult.RawFormat());
@@ -32,4 +33,6 @@ public abstract class AggregateFunctionBase : IAggregationFunction
     protected readonly List<KeyValuePair<string, string>> _headers = [];
 
     readonly IStatistics _statistics;
+
+    readonly IApiMemoryCache _apiCache;
 }

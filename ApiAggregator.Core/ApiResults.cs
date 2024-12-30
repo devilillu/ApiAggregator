@@ -9,6 +9,9 @@ public class ApiResultGeneric : IApiResult
     public static async Task<IApiResult> CreateFrom(IApiFunction function) =>
         new ApiResultGeneric(await HttpClientHelper.SendAsync(function.Pattern, function.Headers), function);
 
+    public static async Task<IApiResult> CreateFrom(IApiFunction function, string result) =>
+        await Task.FromResult( new ApiResultGeneric(new(result, TimeSpan.FromMilliseconds(0)), function));
+
     public ApiResultGeneric(HttpClientResult message, IApiFunction function)
     {
         Result = message;
@@ -22,8 +25,8 @@ public class ApiResultGeneric : IApiResult
 
 public class ApiAggResultGeneric : IAggResult
 {
-    public static async Task<IAggResult> CreateFrom(IEnumerable<IApiFunction> functions, CancellationToken ct) =>
-        new ApiAggResultGeneric(await Engine.Run(functions, ct));
+    public static async Task<IAggResult> CreateFrom(IEnumerable<IApiFunction> functions, IApiMemoryCache cache, CancellationToken ct) =>
+        new ApiAggResultGeneric(await Engine.Run(functions, cache, ct));
 
     public ApiAggResultGeneric(IList<IApiResult> results)
     {

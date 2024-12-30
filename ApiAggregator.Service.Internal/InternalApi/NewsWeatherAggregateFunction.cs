@@ -7,8 +7,9 @@ namespace ApiAggregator.Service.Internal.InternalApi;
 
 public class NewsWeatherAggregateFunction : AggregateFunctionBase
 {
-    public NewsWeatherAggregateFunction(string weatherAPI, string newsAPI, IStatistics statistics)
-        : base(statistics)
+    public NewsWeatherAggregateFunction(string weatherAPI, string newsAPI,
+        IStatistics statistics, IApiMemoryCache apiCache)
+        : base(statistics, apiCache)
     {
         _weatherAPI = weatherAPI;
         _newsAPI = newsAPI;
