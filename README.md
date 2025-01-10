@@ -59,6 +59,7 @@
 - https://localhost:44309/stats/total_avg
 
 # TODO
+- Add logger
 - Use of dependency injection
 - Write unit-test
 - Rework on output formats

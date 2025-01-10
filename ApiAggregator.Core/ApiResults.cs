@@ -10,7 +10,7 @@ public class ApiResultGeneric : IApiResult
         new ApiResultGeneric(await HttpClientHelper.SendAsync(function.Pattern, function.Headers), function);
 
     public static async Task<IApiResult> CreateFrom(IApiFunction function, string result) =>
-        await Task.FromResult( new ApiResultGeneric(new(result, TimeSpan.FromMilliseconds(0)), function));
+        await Task.FromResult(new ApiResultGeneric(new(result, TimeSpan.FromMilliseconds(0)), function));
 
     public ApiResultGeneric(HttpClientResult message, IApiFunction function)
     {
@@ -28,10 +28,7 @@ public class ApiAggResultGeneric : IAggResult
     public static async Task<IAggResult> CreateFrom(IEnumerable<IApiFunction> functions, IApiMemoryCache cache, CancellationToken ct) =>
         new ApiAggResultGeneric(await Engine.Run(functions, cache, ct));
 
-    public ApiAggResultGeneric(IList<IApiResult> results)
-    {
-        Results = [.. results];
-    }
+    public ApiAggResultGeneric(IList<IApiResult> results) => Results = [.. results];
 
     public List<IApiResult> Results { get; }
 
@@ -39,7 +36,7 @@ public class ApiAggResultGeneric : IAggResult
     {
         try
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (var httpResult in Results)
             {
                 sb.Append(httpResult.Result.Result);
